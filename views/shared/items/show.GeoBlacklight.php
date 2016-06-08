@@ -285,18 +285,20 @@ if ($SlugPrependPublisher_b && isset($publisher[0])) {
 		};
 	}
 
+/* not used km
 if ($rights == "Public") {
 	$GeoServerWS = $GeoserverWorkspacePublic;
 	} else {
 	$GeoServerWS = $GeoserverWorkspaceRestricted;
 	}
-
+*/
+/*changed from geoserver to urn km*/
 if (is_array($layerID)) {
 	if ($layerID[0] == "OVERRIDE") {
 		$layerID = $layerID[1];
 		};
 } else {
-	$layerID = strtolower($GeoServerWS.":".$slug);
+	$layerID = strtolower("urn:".$slug);
 };
 
 if (is_array($identifier)) {
@@ -424,6 +426,7 @@ if ($geoIDnum >= 1) {
 $geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
 $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
 
+/* not used km
 if ($UUIDParsing_b) {
 	if (strpos($UUID, "handle.net/") !== false) {
 		$UUIDNetPos = strpos($UUID, ".net/");
@@ -438,8 +441,9 @@ if ($UUIDParsing_b) {
 } else {
 
 	}
+*/
 
-
+/* not used km
 if ($rights == "Public") {
 	$WFS = $geoserverPublic."wfs";
 	$WMS = $geoserverPublic."wms";
@@ -451,7 +455,7 @@ if ($rights == "Public") {
 	$WMS = "ERROR DETERMINING URL, CHECK RIGHTS SECTION";
 	};
 
-/*
+/* not sure if needed km
 $references = array(
 "http://schema.org/url" => $UUID,
 "http://schema.org/downloadUrl" => $downloadURL,
@@ -460,7 +464,7 @@ $references = array(
 );
 */
 
-/* commenting out since not using UUID parsing -KM
+/* commenting out since not using UUID parsing km
 if ($UUIDParsing_b && $DirectDownloadLink_b) {
 $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://schema.org/downloadUrl\":\"".$downloadURL."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
 } else {
@@ -469,7 +473,7 @@ $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net
 */
 
 
-/*New references code km*/
+/*New references coding for json km*/
 $references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
 
