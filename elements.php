@@ -10,16 +10,14 @@
         array(
             'label' => 'uuid',
             'name'  => 'UUID',
-            'description' => 'The persistent Handle System URL',
-            'comment' => 'If you are depositing a data set, leave this field blank.',
+            'description' => 'Unique string generated for item',
             'data_type'   => 'Tiny Text',
         ),
 
         array(
             'label' => 'LayerID',
             'name'  => 'Layer ID',
-            'description' => 'The complete identifier for the WMS/WFS/WCS layer.',
-            'comment' => 'If you are depositing a data set, leave this field blank.',
+            'description' => 'The complete identifier.',
             'data_type'   => 'Tiny Text',
         ),
 
@@ -27,7 +25,6 @@
             'label' => 'Slug',
             'name'  => 'Slug',
             'description' => 'Unique identifier visible to the user, used for Permalinks',
-            'comment' => 'If you are depositing a data set, leave this field blank.',
             'data_type'   => 'Tiny Text',
         ),
 
@@ -35,7 +32,6 @@
             'label' => 'GeomType',
             'name'  => 'Geometry Type',
             'description' => 'Geometry type for layer data.',
-            'comment' => 'Select from the menu below.',
             'data_type'   => 'Tiny Text',
         ),
 
@@ -43,7 +39,6 @@
             'label' => 'LayerModDT',
             'name'  => 'Layer Modified Date',
             'description' => 'Last modification date for the metadata record.',
-            'comment' => 'If you are depositing a data set, leave this field blank.',
             'data_type' => 'Tiny Text',
         ),
 
