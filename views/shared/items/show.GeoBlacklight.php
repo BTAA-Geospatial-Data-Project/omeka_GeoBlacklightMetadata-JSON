@@ -50,6 +50,13 @@ $geoRSSPolygon = metadata($item, array('GeoBlacklight', 'GeoRSS Polygon'), array
 $solrGeom = metadata($item, array('GeoBlacklight', 'Apache Solr Geometry'), array('all'=>true, 'no_escape'=>true));
 $solrYear = metadata($item, array('GeoBlacklight', 'Apache Solr Year'), array('all'=>true, 'no_escape'=>true));
 
+/*additional variables for links km*/
+$thumbnail = metadata($item, array('GeoBlacklight', 'Thumbnail'), array('all'=>true, 'no_escape'=>true));
+$download = metadata($item, array('GeoBlacklight', 'Download File'), array('all'=>true, 'no_escape'=>true));
+$information = metadata($item, array('GeoBlacklight', 'Information Page'), array('all'=>true, 'no_escape'=>true));
+$esrirest = metadata($item, array('GeoBlacklight', 'Esri Rest Service'), array('all'=>true, 'no_escape'=>true));
+$webmapservice = metadata($item, array('GeoBlacklight', 'Web Map Service'), array('all'=>true, 'no_escape'=>true));
+
 
 if (count($identifier) == 1) {
 	$identifier = $identifier[0];
@@ -86,6 +93,37 @@ if ($DefaultInstitution_b && !$HardCodeInstitution_b) {
 		$provenance = $Institution;
 	};
 }
+/*count for new variables km*/
+if (count($information) == 1) {
+	$information = $information[0];
+} elseif (count($information) == 0) {
+	$information = "";
+	};
+
+if (count($thumbnail) == 1) {
+	$thumbnail = $thumbnail[0];
+} elseif (count($thumbnail) == 0) {
+	$thumbnail = "";
+	};
+
+if (count($download) == 1) {
+	$download = $download[0];
+} elseif (count($download) == 0) {
+	$download = "";
+	};
+
+if (count($esrirest) == 1) {
+	$esrirest = $esrirest[0];
+} elseif (count($esrirest) == 0) {
+	$esrirest = "";
+	};
+
+if (count($webmapservice) == 1) {
+	$esrirest = $webmapservice[0];
+} elseif (count($webmapservice) == 0) {
+	$webmapservice = "";
+	};
+
 
 if (count($references) == 1) {
 	$references = $references[0];
@@ -421,11 +459,19 @@ $references = array(
 "http://www.opengis.net/def/serviceType/ogc/wms" => $WMS,
 );
 */
+
+/* commenting out since not using UUID parsing -KM
 if ($UUIDParsing_b && $DirectDownloadLink_b) {
 $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://schema.org/downloadUrl\":\"".$downloadURL."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
 } else {
 $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
 }
+*/
+
+
+/*New references code km*/
+$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
+
 
 /* polygon parser logic */
 
