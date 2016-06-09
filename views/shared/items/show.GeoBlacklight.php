@@ -3,6 +3,7 @@
 include 'location_DB.php';
 include 'config.php';
 
+/* commenting out newer deriveFunction function and adding previous version km
 function deriveSlug ($UUIDfull) {
 
   if (strpos($UUIDfull, "handle.net/") !== false) {
@@ -12,11 +13,19 @@ function deriveSlug ($UUIDfull) {
 
     $string = "hdl_".str_replace("/", "_", $UUID_uniq);
   } else {
-    $string = "UNABLE_TO_DERIVE_FROM_UUID";
+    $string = $UUID;
   };
 	return $string;
 	};
 
+*/
+function deriveSlug ($string) {
+    $junkWords = array("for "," in "," on","the "," a "," A ","A "," an "," and "," use ","with"," of ");
+    $lessjunk = str_replace($junkWords, '', $string);
+	$clean = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $lessjunk);
+	$flatten = preg_replace('/\s+/', '', $clean);
+	return $flatten;
+	};
 
 /* metadata variables */
 
@@ -81,7 +90,7 @@ if (count($rights) == 1) {
 } elseif (count($rights) == 0) {
 	$rights = "Restricted";
 	};
-
+/*
 if ($HardCodeInstitution_b) {
 	$provenance = $Institution;
 	}
@@ -93,6 +102,16 @@ if ($DefaultInstitution_b && !$HardCodeInstitution_b) {
 		$provenance = $Institution;
 	};
 }
+*/
+if (count($provenance) == 1) {
+	$provenance = $provenance[0];
+} elseif (count($provenance) == 0) {
+	$provenance = "";
+	};
+
+
+
+
 /*count for new variables km*/
 if (count($information) == 1) {
 	$information = $information[0];
@@ -274,16 +293,19 @@ if (count($solrYear) == 1) {
 	$solrYear = 0;
 	};
 
+
 if ($SlugPrependPublisher_b && isset($publisher[0])) {
 	if ($slug == "") {
 		$publisher = $publisher[0];
-		$slug = strtolower($provenance)."_".deriveSlug($UUID);
+		$slug = strtolower($provenance)."-".deriveSlug($publisher)."_".deriveSlug($title);
 		};
 	} else {
 	if ($slug == "") {
-		$slug = strtolower($provenance)."_".deriveSlug($UUID);
+		$slug = strtolower($provenance)."-".deriveSlug($UUID);
 		};
 	}
+
+
 
 /* not used km
 if ($rights == "Public") {
@@ -298,7 +320,7 @@ if (is_array($layerID)) {
 		$layerID = $layerID[1];
 		};
 } else {
-	$layerID = strtolower("urn:".$slug);
+	$layerID = strtolower("urn:".$UUID);
 };
 
 if (is_array($identifier)) {

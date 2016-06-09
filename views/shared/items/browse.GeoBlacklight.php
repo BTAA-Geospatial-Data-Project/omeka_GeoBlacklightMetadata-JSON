@@ -5,6 +5,7 @@ include 'location_DB.php';
 include 'config.php';
 
 $runningtotal = 0;
+/*
 if ($log_b) {
 	$log = fopen($speedlog, "a") or die("Unable to open file!");
 	$begin_time = getdate();
@@ -12,7 +13,8 @@ if ($log_b) {
 	fwrite($log, $begin_statement);
 	$email_report = $begin_statement;
 };
-
+*/
+/* commenting out newer deriveFunction function and adding previous version km
 function deriveSlug ($UUIDfull) {
 
   if (strpos($UUIDfull, "handle.net/") !== false) {
@@ -20,12 +22,24 @@ function deriveSlug ($UUIDfull) {
     $UUIDNumBegin = $UUIDNetPos + 5;
     $UUID_uniq = substr($UUIDfull, $UUIDNumBegin, strlen($UUIDfull));
 
-    $string = str_replace("/", "_", $UUID_uniq);
+    $string = "hdl_".str_replace("/", "_", $UUID_uniq);
   } else {
-    $string = "UNABLE_TO_DERIVE_FROM_UUID";
+    $string = $UUID;
   };
 	return $string;
 	};
+
+*/
+function deriveSlug ($string) {
+    $junkWords = array("for "," in "," on","the "," a "," A ","A "," an "," and "," use ","with"," of ");
+    $lessjunk = str_replace($junkWords, '', $string);
+	$clean = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $lessjunk);
+	$flatten = preg_replace('/\s+/', '', $clean);
+	return $flatten;
+	};
+
+
+
 
 $itemSum = 0;
 foreach(loop('items') as $num):
@@ -78,6 +92,13 @@ $geoRSSPolygon = metadata($item, array('GeoBlacklight', 'GeoRSS Polygon'), array
 $solrGeom = metadata($item, array('GeoBlacklight', 'Apache Solr Geometry'), array('all'=>true, 'no_escape'=>true));
 $solrYear = metadata($item, array('GeoBlacklight', 'Apache Solr Year'), array('all'=>true, 'no_escape'=>true));
 
+/*additional variables for links km*/
+$thumbnail = metadata($item, array('GeoBlacklight', 'Thumbnail'), array('all'=>true, 'no_escape'=>true));
+$download = metadata($item, array('GeoBlacklight', 'Download File'), array('all'=>true, 'no_escape'=>true));
+$information = metadata($item, array('GeoBlacklight', 'Information Page'), array('all'=>true, 'no_escape'=>true));
+$esrirest = metadata($item, array('GeoBlacklight', 'Esri Rest Service'), array('all'=>true, 'no_escape'=>true));
+$webmapservice = metadata($item, array('GeoBlacklight', 'Web Map Service'), array('all'=>true, 'no_escape'=>true));
+
 
 if (count($identifier) == 1) {
 	$identifier = $identifier[0];
@@ -103,6 +124,7 @@ if (count($rights) == 1) {
 	$rights = "Restricted";
 	};
 
+/*
 if ($HardCodeInstitution_b) {
 	$provenance = $Institution;
 	}
@@ -114,6 +136,46 @@ if ($DefaultInstitution_b && !$HardCodeInstitution_b) {
 		$provenance = $Institution;
 	};
 }
+*/
+if (count($provenance) == 1) {
+	$provenance = $provenance[0];
+} elseif (count($provenance) == 0) {
+	$provenance = "";
+	};
+
+
+/*count for new variables km*/
+if (count($information) == 1) {
+	$information = $information[0];
+} elseif (count($information) == 0) {
+	$information = "";
+	};
+
+if (count($thumbnail) == 1) {
+	$thumbnail = $thumbnail[0];
+} elseif (count($thumbnail) == 0) {
+	$thumbnail = "";
+	};
+
+if (count($download) == 1) {
+	$download = $download[0];
+} elseif (count($download) == 0) {
+	$download = "";
+	};
+
+if (count($esrirest) == 1) {
+	$esrirest = $esrirest[0];
+} elseif (count($esrirest) == 0) {
+	$esrirest = "";
+	};
+
+if (count($webmapservice) == 1) {
+	$esrirest = $webmapservice[0];
+} elseif (count($webmapservice) == 0) {
+	$webmapservice = "";
+	};
+
+
 
 if (count($references) == 1) {
 	$references = $references[0];
@@ -270,19 +332,24 @@ if ($SlugPrependPublisher_b && isset($publisher[0])) {
 		};
 	}
 
+
+/* not used km
 if ($rights == "Public") {
 	$GeoServerWS = $GeoserverWorkspacePublic;
 	} else {
 	$GeoServerWS = $GeoserverWorkspaceRestricted;
 	}
-
+*/
+/*changed from geoserver to urn km*/
 if (is_array($layerID)) {
 	if ($layerID[0] == "OVERRIDE") {
 		$layerID = $layerID[1];
 		};
 } else {
-	$layerID = strtolower($GeoServerWS.":".$slug);
+	$layerID = strtolower("urn:".$UUID);
 };
+
+
 
 if (is_array($identifier)) {
 	if ($identifier[0] == "OVERRIDE") {
@@ -411,9 +478,10 @@ if ($geoIDnum >= 1) {
 /*end geonames */
 
 /* references logic */
+
 $geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
 $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
-
+/* not used km
 if ($UUIDParsing_b) {
 	if (strpos($UUID, "handle.net/") !== false) {
 		$UUIDNetPos = strpos($UUID, ".net/");
@@ -428,8 +496,8 @@ if ($UUIDParsing_b) {
 } else {
 
 	}
-
-
+*/
+/* not used km
 if ($rights == "Public") {
 	$WFS = $geoserverPublic."wfs";
 	$WMS = $geoserverPublic."wms";
@@ -440,8 +508,8 @@ if ($rights == "Public") {
 	$WFS = "ERROR DETERMINING URL, CHECK RIGHTS SECTION";
 	$WMS = "ERROR DETERMINING URL, CHECK RIGHTS SECTION";
 	};
-
-/*
+*/
+/* not sure if needed km
 $references = array(
 "http://schema.org/url" => $UUID,
 "http://schema.org/downloadUrl" => $downloadURL,
@@ -449,11 +517,25 @@ $references = array(
 "http://www.opengis.net/def/serviceType/ogc/wms" => $WMS,
 );
 */
+
+/* not using parsing km
 if ($UUIDParsing_b && $DirectDownloadLink_b) {
 $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://schema.org/downloadUrl\":\"".$downloadURL."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
 } else {
 $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
 }
+
+*/
+/*New references coding for json km*/
+
+/* All options
+$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
+
+ */
+ /* information link only*/
+$references = "{\"http://schema.org/url\":\"".$information."\"}";
+
+
 
 /* polygon parser logic */
 
@@ -546,12 +628,16 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 "solr_geom": <?php echo(json_encode($solrGeom)); ?>,
 "solr_year_i": <?php echo(json_encode(intval($solrYear))); ?>
 }<?php if ($itemSumInternal < $itemSum) { echo("],"); } else { echo("] \n }"); };?>
+
+
+
+<!--
 <?php
 if ($log_b) {
 	$end_item_time = microtime(true);
 	$item_time = $end_item_time - $begin_item_time;
 	$runningtotal = $runningtotal + $item_time;
-	$printed_item_time = "Item ".strval($itemSumInternal)."-- Total processing time (ms): ".($item_time * 1000)."\n\n";
+	$printed_item_time = "Item ".strval($itemSumInternal)."~~ Total processing time (ms): ".($item_time * 1000)."\n\n";
 	/* fwrite($log, $printed_search_time); */
 	fwrite($log, $printed_item_time);
 	$email_report = $email_report.$printed_item_time;
@@ -576,3 +662,5 @@ if ($log_b) {
 		}
 }
 ?>
+ -->
+
