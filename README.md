@@ -26,4 +26,6 @@ Download the most current version from the `master` branch, rename the folder to
 
 GeoBlacklight Metadata requires that you provide a path to jeoQuery and Live Query.
 
+####CIC Notes
+This fork customizes the plugin in two main ways.  It removes NYU hard coding, and adds elements to hold external links that get pulled into dct:references.
 
