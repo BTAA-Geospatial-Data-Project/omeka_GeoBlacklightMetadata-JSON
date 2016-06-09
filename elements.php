@@ -112,6 +112,14 @@
             'data_type'   => 'Tiny Text',
         ),
 
+
+        array(
+            'label' => 'IIIF',
+            'name'  => 'IIIF Server',
+            'description' =>'Full link to the image on an IIIF server',
+            'data_type'   => 'Tiny Text',
+        ),
+
          array(
             'label' => 'EsriService',
             'name'  => 'Esri Rest Service',

@@ -96,6 +96,7 @@ $solrYear = metadata($item, array('GeoBlacklight', 'Apache Solr Year'), array('a
 $thumbnail = metadata($item, array('GeoBlacklight', 'Thumbnail'), array('all'=>true, 'no_escape'=>true));
 $download = metadata($item, array('GeoBlacklight', 'Download File'), array('all'=>true, 'no_escape'=>true));
 $information = metadata($item, array('GeoBlacklight', 'Information Page'), array('all'=>true, 'no_escape'=>true));
+$iiif = metadata($item, array('GeoBlacklight', 'IIIF Server'), array('all'=>true, 'no_escape'=>true));
 $esrirest = metadata($item, array('GeoBlacklight', 'Esri Rest Service'), array('all'=>true, 'no_escape'=>true));
 $webmapservice = metadata($item, array('GeoBlacklight', 'Web Map Service'), array('all'=>true, 'no_escape'=>true));
 
@@ -161,6 +162,12 @@ if (count($download) == 1) {
 	$download = $download[0];
 } elseif (count($download) == 0) {
 	$download = "";
+	};
+
+if (count($iiif) == 1) {
+	$iiif = $iiif[0];
+} elseif (count($iiif) == 0) {
+	$iiif = "";
 	};
 
 if (count($esrirest) == 1) {
@@ -527,13 +534,17 @@ $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net
 
 */
 /*New references coding for json km*/
-
 /* All options
-$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
+$references =
+"{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
  */
+
  /* information link only*/
-$references = "{\"http://schema.org/url\":\"".$information."\"}";
+// $references = "{\"http://schema.org/url\":\"".$information."\"}";
+
+ /* information, iiif*/
+$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
 
 
