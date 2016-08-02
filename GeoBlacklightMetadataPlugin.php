@@ -77,13 +77,12 @@ class GeoBlacklightMetadataPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_uninstallOptions();
     }
 
-    public function  hookAdminHead($args) {
+      public function  hookAdminHead($args) {
   include 'views/shared/items/config.php';
   queue_js_url($jeoQueryLoc);
   queue_js_url($LiveQueryLoc);
   $jsString = "
   
-
   
   				jQuery(function($) {
   				
@@ -116,10 +115,7 @@ class GeoBlacklightMetadataPlugin extends Omeka_Plugin_AbstractPlugin
                 	
             });
 ";
-
 queue_js_string($jsString);
-
-
       }
 
     /**
