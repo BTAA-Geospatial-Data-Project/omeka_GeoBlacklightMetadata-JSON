@@ -233,7 +233,7 @@ if (count($dateIssued) == 1) {
 } /*elseif (count($dateIssued) == 0) {
 	$dateIssued = "";
 	};*/
-
+/*
 if (count($temporalCoverage) == 1) {
 	$temporalCoverage = array($temporalCoverage[0]);
 } elseif (count($temporalCoverage) == 0) {
@@ -246,7 +246,7 @@ if (strpos($temporalCoverage[0],'-')) {
 	$year2 = substr($temporalCoverage[0], $dashpos+1, strlen($temporalCoverage[0]));
 	$temporalCoverage = array($year1, $year2);
 }
-
+*/
 /*
 if (count($spatialCoverage) == 1) {
 	$spatialCoverage = $spatialCoverage[0];
@@ -463,7 +463,7 @@ if ($geoIDnum >= 1) {
     $loclookup = $geoIDstack[0];
     $query = array(
         "geonameId" => $loclookup,
-        "username" => "sgbalogh",
+        "username" => "majew030",
     );
 
     $cc_1 = curl_init();
@@ -485,10 +485,10 @@ if ($geoIDnum >= 1) {
 /*end geonames */
 
 /* references logic */
-
+/* not used km
 $geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
 $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
-/* not used km
+
 if ($UUIDParsing_b) {
 	if (strpos($UUID, "handle.net/") !== false) {
 		$UUIDNetPos = strpos($UUID, ".net/");
@@ -522,6 +522,7 @@ $references = array(
 "http://schema.org/downloadUrl" => $downloadURL,
 "http://www.opengis.net/def/serviceType/ogc/wfs" => $WFS,
 "http://www.opengis.net/def/serviceType/ogc/wms" => $WMS,
+"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer" => $esrirest
 );
 */
 
@@ -541,10 +542,17 @@ $references =
  */
 
  /* information link only*/
-// $references = "{\"http://schema.org/url\":\"".$information."\"}";
+$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
  /* information, iiif*/
-$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+
+ /* information, esri*/
+ 
+ 
+// $references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+
+
 
 
 
@@ -642,7 +650,7 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 
 
 
-<!--
+
 <?php
 if ($log_b) {
 	$end_item_time = microtime(true);
@@ -673,5 +681,4 @@ if ($log_b) {
 		}
 }
 ?>
- -->
 

@@ -91,19 +91,7 @@ if (count($rights) == 1) {
 } elseif (count($rights) == 0) {
 	$rights = "Restricted";
 	};
-/*
-if ($HardCodeInstitution_b) {
-	$provenance = $Institution;
-	}
 
-if ($DefaultInstitution_b && !$HardCodeInstitution_b) {
-	if (count($provenance) == 1) {
-	$provenance = $provenance[0];
-		} elseif (count($provenance) == 0) {
-		$provenance = $Institution;
-	};
-}
-*/
 if (count($provenance) == 1) {
 	$provenance = $provenance[0];
 } elseif (count($provenance) == 0) {
@@ -214,17 +202,18 @@ if (strpos($temporalCoverage[0],'-')) {
 	$dashpos = strpos($temporalCoverage[0],'-');
 	$year1 = substr($temporalCoverage[0], 0, $dashpos);
 	$year2 = substr($temporalCoverage[0], $dashpos+1, strlen($temporalCoverage[0]));
-	$temporalCoverage = array($year1, $year2);
+	$temporalCoverage = array($year1,$year2);
+	
 }
 }
-
 /*
+
 if (count($spatialCoverage) == 1) {
 	$spatialCoverage = $spatialCoverage[0];
 } elseif (count($spatialCoverage) == 0) {
 	$spatialCoverage = "";
 	};
-*/
+
 
 /*
 if (count($relation) == 1) {
@@ -315,13 +304,6 @@ if ($SlugPrependPublisher_b && isset($publisher[0])) {
 
 
 
-/* not used km
-if ($rights == "Public") {
-	$GeoServerWS = $GeoserverWorkspacePublic;
-	} else {
-	$GeoServerWS = $GeoserverWorkspaceRestricted;
-	}
-*/
 /*changed from geoserver to urn km*/
 if (is_array($layerID)) {
 	if ($layerID[0] == "OVERRIDE") {
@@ -429,7 +411,7 @@ if ($geoIDnum >= 1) {
     $loclookup = $geoIDstack[0];
     $query = array(
         "geonameId" => $loclookup,
-        "username" => "sgbalogh",
+        "username" => "majew030",
     );
 
     $cc_1 = curl_init();
@@ -455,7 +437,6 @@ if ($geoIDnum >= 1) {
 /* references logic */
 $geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
 $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
-
 /* not used km
 if ($UUIDParsing_b) {
 	if (strpos($UUID, "handle.net/") !== false) {
@@ -515,6 +496,11 @@ $references =
 
  /* information, iiif*/
 $references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+
+ /* information, esri*/
+ 
+ 
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
 
 
 /* polygon parser logic */
