@@ -542,10 +542,13 @@ $references =
  */
 
  /* information link only*/
-$references = "{\"http://schema.org/url\":\"".$information."\"}";
+//*$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
  /* information, iiif*/
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+
+ /* information, iiif*/
+$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
  /* information, esri*/
  
@@ -658,8 +661,8 @@ if ($log_b) {
 	$runningtotal = $runningtotal + $item_time;
 	$printed_item_time = "Item ".strval($itemSumInternal)."~~ Total processing time (ms): ".($item_time * 1000)."\n\n";
 	/* fwrite($log, $printed_search_time); */
-	fwrite($log, $printed_item_time);
-	$email_report = $email_report.$printed_item_time;
+	//fwrite($log, $printed_item_time);
+	//$email_report = $email_report.$printed_item_time;
 }
 
 endforeach;
