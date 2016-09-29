@@ -6,9 +6,9 @@
 
 	/* Enter the WEB-ACCESSIBLE paths to the two necessary JS files,
 	and your GeoNames API username (please don't use mine!) */
-		$jeoQueryLoc = "/omeka/plugins/GeoBlacklightMetadata/js/jeoquery.js";
-		$LiveQueryLoc = "/omeka/plugins/GeoBlacklightMetadata/js/jquery.livequery.min.js";
-		$GeoNamesUserID = "majew030";
+		$jeoQueryLoc = "";
+		$LiveQueryLoc = "";
+		$GeoNamesUserID = "";
 
 /* Slug Deriver Options */
 	/* Automatically prepend slug with the slugified publisher name?

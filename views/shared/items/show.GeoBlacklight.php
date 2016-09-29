@@ -433,74 +433,33 @@ if ($geoIDnum >= 1) {
 /*end geonames */
 
 
-
-/* references logic */
 $geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
 $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
-/* not used km
-if ($UUIDParsing_b) {
-	if (strpos($UUID, "handle.net/") !== false) {
-		$UUIDNetPos = strpos($UUID, ".net/");
-		$UUIDNumBegin = $UUIDNetPos + 5;
-		$UUID_uniq = substr($UUID, $UUIDNumBegin, strlen($UUID));
-		$repoFileNum = "2";
-		$downloadURL = "https://archive.nyu.edu/bitstream/".$UUID_uniq."/".$repoFileNum."/".$slug.".zip";
-	} else {
-		$repoFileNum = "9";
-		$downloadURL = "UUID IMPROPERLY PARSED: MAKE SURE TO USE HANDLE.NET OR DISABLE PARSING";
-		};
-} else {
 
-	}
-*/
+/* references logic */
 
-/* not used km
-if ($rights == "Public") {
-	$WFS = $geoserverPublic."wfs";
-	$WMS = $geoserverPublic."wms";
-	} elseif ($rights == "Restricted") {
-	$WFS = $geoserverRestricted."wfs";
-	$WMS = $geoserverRestricted."wms";
-	} else {
-	$WFS = "ERROR DETERMINING URL, CHECK RIGHTS SECTION";
-	$WMS = "ERROR DETERMINING URL, CHECK RIGHTS SECTION";
-	};
+/*New references coding for json by km
+User needs to uncomment selection for desired hash*/
 
-/* not sure if needed km
-$references = array(
-"http://schema.org/url" => $UUID,
-"http://schema.org/downloadUrl" => $downloadURL,
-"http://www.opengis.net/def/serviceType/ogc/wfs" => $WFS,
-"http://www.opengis.net/def/serviceType/ogc/wms" => $WMS,
-);
-*/
-
-/* commenting out since not using UUID parsing km
-if ($UUIDParsing_b && $DirectDownloadLink_b) {
-$references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://schema.org/downloadUrl\":\"".$downloadURL."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
-} else {
-$references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"".$WFS."\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"".$WMS."\"}";
-}
-*/
+//information link only
+$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
 
-/*New references coding for json km*/
-/* All options
-$references =
-"{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+//information, iiif
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
- */
 
- /* information link only*/
-// $references = "{\"http://schema.org/url\":\"".$information."\"}";
+//information, download, iiif
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
- /* information, iiif*/
-$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
-
- /* information, esri*/
+//information, esri
  
- 
-//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+// $references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+
+/* All options*/
+
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+
 
 
 /* polygon parser logic */
