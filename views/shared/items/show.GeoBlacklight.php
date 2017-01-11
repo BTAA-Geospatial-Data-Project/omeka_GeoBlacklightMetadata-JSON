@@ -442,19 +442,25 @@ $geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
 User needs to uncomment selection for desired hash*/
 
 //information link only
-$references = "{\"http://schema.org/url\":\"".$information."\"}";
+//$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
 
 //information, iiif
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
+//information, download
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
 //information, download, iiif
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
-//information, esri
+//information, thumb
  
-// $references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\"}";
+
+//information, esri
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+
 
 /* All options*/
 
@@ -538,7 +544,7 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 "dc_format_s": <?php echo(json_encode($format)); ?>,
 "dc_language_s": <?php echo(json_encode($language)); ?>,
 "dc_type_s": <?php echo(json_encode($type)); ?>,
-"dc_publisher_s": <?php echo(json_encode($publisher)); ?>,
+"dc_publisher_sm": <?php echo(json_encode($publisher)); ?>,
 "dc_creator_sm": <?php echo(json_encode($creator)); ?>,
 "dc_subject_sm": <?php echo(json_encode($subject)); ?>,
 "dct_isPartOf_sm": <?php echo(json_encode($isPartOf)); ?>,

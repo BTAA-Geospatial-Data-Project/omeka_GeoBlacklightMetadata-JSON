@@ -5,7 +5,7 @@ include 'location_DB.php';
 include 'config.php';
 
 $runningtotal = 0;
-/*
+
 if ($log_b) {
 	$log = fopen($speedlog, "a") or die("Unable to open file!");
 	$begin_time = getdate();
@@ -13,7 +13,7 @@ if ($log_b) {
 	fwrite($log, $begin_statement);
 	$email_report = $begin_statement;
 };
-*/
+
 /* commenting out newer deriveFunction function and adding previous version km
 function deriveSlug ($UUIDfull) {
 
@@ -536,24 +536,27 @@ $references = "{\"http://schema.org/url\":\"".$UUID."\",\"http://www.opengis.net
 */
 /*New references coding for json km*/
 /* All options
-$references =
-"{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
-
  */
+//$references =
+//"{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+
 
  /* information link only*/
-//*$references = "{\"http://schema.org/url\":\"".$information."\"}";
+$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
  /* information, iiif*/
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
- /* information, iiif*/
-$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+ /* information, download, iiif*/
+// $references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
+
+ /* information, download*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
  /* information, esri*/
  
  
-// $references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
 
 
 
@@ -637,7 +640,7 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 "dc_format_s": <?php echo(json_encode($format)); ?>,
 "dc_language_s": <?php echo(json_encode($language)); ?>,
 "dc_type_s": <?php echo(json_encode($type)); ?>,
-"dc_publisher_s": <?php echo(json_encode($publisher)); ?>,
+"dc_publisher_sm": <?php echo(json_encode($publisher)); ?>,
 "dc_creator_sm": <?php echo(json_encode($creator)); ?>,
 "dc_subject_sm": <?php echo(json_encode($subject)); ?>,
 "dct_isPartOf_sm": <?php echo(json_encode($isPartOf)); ?>,
@@ -651,18 +654,15 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 "solr_year_i": <?php echo(json_encode(intval($solrYear))); ?>
 }<?php if ($itemSumInternal < $itemSum) { echo("],"); } else { echo("] \n }"); };?>
 
-
-
-
 <?php
 if ($log_b) {
 	$end_item_time = microtime(true);
 	$item_time = $end_item_time - $begin_item_time;
 	$runningtotal = $runningtotal + $item_time;
 	$printed_item_time = "Item ".strval($itemSumInternal)."~~ Total processing time (ms): ".($item_time * 1000)."\n\n";
-	/* fwrite($log, $printed_search_time); */
-	//fwrite($log, $printed_item_time);
-	//$email_report = $email_report.$printed_item_time;
+	fwrite($log, $printed_search_time); 
+	fwrite($log, $printed_item_time);
+	$email_report = $email_report.$printed_item_time;
 }
 
 endforeach;
@@ -671,10 +671,10 @@ if ($log_b) {
 	$entire_request_end = microtime(true);
 	$entire_request_time = $entire_request_end - $entire_request_begin;
 	$runTot_entire_diff = $entire_request_time - $runningtotal;
-	$printed_request_time = "===============================================\nEntire query time: ".$entire_request_time." seconds, for ".strval($itemSumInternal)." items\nRunning total was ".$runningtotal." seconds, with difference equaling ".($runTot_entire_diff*1000)." ms\n===============================================\n\n";
+	$printed_request_time = "===============================================\nEntire query time: ".$entire_request_time." seconds, for ".strval($itemSumInternal)." items\nRunning total was 		".$runningtotal." seconds, with difference equaling ".($runTot_entire_diff*1000)." ms\n===============================================\n\n";
 	fwrite($log, $printed_request_time);
 	fclose($log);
-/* mail report */
+//mail report 
 	if ($email_b) {
 		$email_report = $email_report.$printed_request_time;
 		$headers = 'From: ' . $from_email . "\r\n" .
@@ -682,6 +682,9 @@ if ($log_b) {
     	'X-Mailer: PHP/' . phpversion();
 		mail($to_email, 'Export Report', $email_report, $headers);
 		}
+		
 }
 ?>
+
+
 
