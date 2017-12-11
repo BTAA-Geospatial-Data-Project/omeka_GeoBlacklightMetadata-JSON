@@ -3,31 +3,8 @@
 include 'location_DB.php';
 include 'config.php';
 
-/* commenting out newer deriveFunction function and adding previous version km
-function deriveSlug ($UUIDfull) {
 
-  if (strpos($UUIDfull, "handle.net/") !== false) {
-    $UUIDNetPos = strpos($UUIDfull, ".net/");
-    $UUIDNumBegin = $UUIDNetPos + 5;
-    $UUID_uniq = substr($UUIDfull, $UUIDNumBegin, strlen($UUIDfull));
-
-    $string = "hdl_".str_replace("/", "_", $UUID_uniq);
-  } else {
-    $string = $UUID;
-  };
-	return $string;
-	};
-
-*/
-function deriveSlug ($string) {
-    $junkWords = array("for "," in "," on","the "," a "," A ","A "," an "," and "," use ","with"," of ");
-    $lessjunk = str_replace($junkWords, '', $string);
-	$clean = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $lessjunk);
-	$flatten = preg_replace('/\s+/', '', $clean);
-	return $flatten;
-	};
-
-/* metadata variables */
+/* METADATA VARIABLES */
 
 $item = get_current_record('item');
 
@@ -46,6 +23,7 @@ $subject = metadata($item, array('Dublin Core', 'Subject'), array('all'=>true, '
 $dateIssued = metadata($item, array('Dublin Core', 'Date Issued'), array('all'=>true, 'no_escape'=>true));
 $temporalCoverage = metadata($item, array('Dublin Core', 'Temporal Coverage'), array('all'=>true, 'no_escape'=>true));
 $spatialCoverage = metadata($item, array('Dublin Core', 'Spatial Coverage'), array('all'=>true, 'no_escape'=>true));
+$source = metadata($item, array('Dublin Core', 'Source'), array('all'=>true, 'no_escape'=>true));
 $relation = metadata($item, array('Dublin Core', 'Relation'), array('all'=>true, 'no_escape'=>true));
 $isPartOf = metadata($item, array('Dublin Core', 'Is Part Of'), array('all'=>true, 'no_escape'=>true));
 $UUID = metadata($item, array('GeoBlacklight', 'UUID'), array('all'=>true, 'no_escape'=>true));
@@ -55,7 +33,6 @@ $geomType = metadata($item, array('GeoBlacklight', 'Geometry Type'), array('all'
 $layerModDate = metadata($item, array('GeoBlacklight', 'Layer Modified Date'), array('all'=>true, 'no_escape'=>true));
 $geoRSSBox = metadata($item, array('GeoBlacklight', 'GeoRSS Box'), array('all'=>true, 'no_escape'=>true));
 $geoRSSPoint = metadata($item, array('GeoBlacklight', 'GeoRSS Point'), array('all'=>true, 'no_escape'=>true));
-$geoRSSPolygon = metadata($item, array('GeoBlacklight', 'GeoRSS Polygon'), array('all'=>true, 'no_escape'=>true));
 $solrGeom = metadata($item, array('GeoBlacklight', 'Apache Solr Geometry'), array('all'=>true, 'no_escape'=>true));
 $solrYear = metadata($item, array('GeoBlacklight', 'Apache Solr Year'), array('all'=>true, 'no_escape'=>true));
 
@@ -66,6 +43,7 @@ $information = metadata($item, array('GeoBlacklight', 'Information Page'), array
 $iiif = metadata($item, array('GeoBlacklight', 'IIIF Server'), array('all'=>true, 'no_escape'=>true));
 $esrirest = metadata($item, array('GeoBlacklight', 'Esri Rest Service'), array('all'=>true, 'no_escape'=>true));
 $webmapservice = metadata($item, array('GeoBlacklight', 'Web Map Service'), array('all'=>true, 'no_escape'=>true));
+$fgdc = metadata($item, array('Dublin Core', 'Bibliographic Citation'), array('all'=>true, 'no_escape'=>true));
 
 
 if (count($identifier) == 1) {
@@ -82,9 +60,7 @@ if (count($title) == 1) {
 
 if (count($description) == 1) {
 	$description = $description[0];
-} /*elseif (count($description) == 0) {
-	$description = "";
-	};*/
+}
 
 if (count($rights) == 1) {
 	$rights = $rights[0];
@@ -98,20 +74,17 @@ if (count($provenance) == 1) {
 	$provenance = "";
 	};
 
-
-
+if (count($source) == 1) {
+	$source = $source[0];
+} elseif (count($source) == 0) {
+	$source = "";
+	};
 
 /*count for new variables km*/
 if (count($information) == 1) {
 	$information = $information[0];
 } elseif (count($information) == 0) {
 	$information = "";
-	};
-
-if (count($thumbnail) == 1) {
-	$thumbnail = $thumbnail[0];
-} elseif (count($thumbnail) == 0) {
-	$thumbnail = "";
 	};
 
 if (count($download) == 1) {
@@ -126,6 +99,11 @@ if (count($iiif) == 1) {
 	$iiif = "";
 	};
 
+if (count($fgdc) == 1) {
+	$fgdc = $fgdc[0];
+} elseif (count($fgdc) == 0) {
+	$fgdc = "";
+	};
 
 if (count($esrirest) == 1) {
 	$esrirest = $esrirest[0];
@@ -140,6 +118,7 @@ if (count($webmapservice) == 1) {
 	};
 
 
+
 if (count($references) == 1) {
 	$references = $references[0];
 } elseif (count($references) == 0) {
@@ -148,48 +127,18 @@ if (count($references) == 1) {
 
 if (count($format) == 1) {
 	$format = $format[0];
-} /*elseif (count($format) == 0) {
-	$format = "";
-	};*/
-
-if (count($language) == 1) {
-	$language = $language[0];
-} /*elseif (count($language) == 0) {
-	$language = "";
-	};*/
-
+}
 if (count($type) == 1) {
 	$type = $type[0];
-} /*elseif (count($type) == 0) {
-	$type = "";
-	};*/
-
-/*if (count($publisher) == 1) {
-	$publisher = $publisher[0];
-} elseif (count($publisher) == 0) {
-	$publisher = [];
-	};*/
+}
 
 if (count($creator) == 1) {
 	$creator = $creator[0];
-} /*elseif (count($creator) == 0) {
-	$creator = "";
-	};*/
-
-/*
-if (count($subject) == 1) {
-	$subject = $subject[0];
-} elseif (count($subject) == 0) {
-	$subject = "";
-	};
-*/
+}
 
 if (count($dateIssued) == 1) {
 	$dateIssued = $dateIssued[0];
-} /*elseif (count($dateIssued) == 0) {
-	$dateIssued = "";
-	};*/
-
+}
 
 if (count($temporalCoverage) == 1) {
 	$temporalCoverage = array($temporalCoverage[0]);
@@ -197,36 +146,16 @@ if (count($temporalCoverage) == 1) {
 	$temporalCoverage = array();
 	};
 
-if (isset($temporalCoverage[0])) {
-if (strpos($temporalCoverage[0],'-')) {
-	$dashpos = strpos($temporalCoverage[0],'-');
-	$year1 = substr($temporalCoverage[0], 0, $dashpos);
-	$year2 = substr($temporalCoverage[0], $dashpos+1, strlen($temporalCoverage[0]));
-	$temporalCoverage = array($year1,$year2);
-	
-}
-}
-/*
+// if (strpos($temporalCoverage[0],'-')) {
+// 	$dashpos = strpos($temporalCoverage[0],'-');
+// 	$year1 = substr($temporalCoverage[0], 0, $dashpos);
+// 	$year2 = substr($temporalCoverage[0], $dashpos+1, strlen($temporalCoverage[0]));
+// 	$temporalCoverage = array($year1,$year2);
+// }
 
-if (count($spatialCoverage) == 1) {
-	$spatialCoverage = $spatialCoverage[0];
-} elseif (count($spatialCoverage) == 0) {
-	$spatialCoverage = "";
-	};
-
-
-/*
-if (count($relation) == 1) {
-	$relation = $relation[0];
-} elseif (count($relation) == 0) {
-	$relation = "";
-	};
-*/
 if (count($isPartOf) == 1) {
 	$isPartOf = $isPartOf[0];
-} /*elseif (count($isPartOf) == 0) {
-	$isPartOf = "";
-	};*/
+}
 
 if (count($UUID) == 1) {
 	$UUID = $UUID[0];
@@ -238,6 +167,12 @@ if (count($layerID) == 1) {
 	$layerID = $layerID[0];
 } elseif (count($layerID) == 0) {
 	$layerID = "";
+	};
+
+if (count($thumbnail) == 1) {
+	$thumbnail = $thumbnail[0];
+} elseif (count($thumbnail) == 0) {
+	$thumbnail = "";
 	};
 
 if (count($slug) == 1) {
@@ -284,34 +219,20 @@ if (count($solrGeom) == 1) {
 
 if (count($solrYear) == 1) {
 	$solrYear = $solrYear[0];
-} elseif (count($solrYear) == 0 && isset($temporalCoverage[0])) {
+} elseif (count($solrYear) == 0) {
 	$solrYear = $temporalCoverage[0];
-	} elseif (count($solrYear) == 0 && !isset($temporalCoverage[0])) {
-	$solrYear = 0;
 	};
 
-
-if ($SlugPrependPublisher_b && isset($publisher[0])) {
-	if ($slug == "") {
-		$publisher = $publisher[0];
-		$slug = strtolower($provenance)."-".deriveSlug($publisher)."_".deriveSlug($title);
-		};
-	} else {
-	if ($slug == "") {
-		$slug = strtolower($provenance)."-".deriveSlug($UUID);
-		};
-	}
-
-
-
-/*changed from geoserver to urn km*/
+/*changed from geoserver to UUID km*/
 if (is_array($layerID)) {
 	if ($layerID[0] == "OVERRIDE") {
 		$layerID = $layerID[1];
 		};
 } else {
-	$layerID = strtolower("urn:".$UUID);
+	$layerID = strtolower($UUID);
 };
+
+
 
 if (is_array($identifier)) {
 	if ($identifier[0] == "OVERRIDE") {
@@ -320,13 +241,6 @@ if (is_array($identifier)) {
 } else {
 	$identifier = $UUID;
 };
-
-/* corrections */
-$engSynonyms = array("English", "Eng", "english", "engl", "Engl", "ENG");
-
-if (in_array($language, $engSynonyms)) {
-	$language = "eng";
-	};
 
 
 /* relations/geonames suggest logic */
@@ -398,7 +312,7 @@ for ($x = 0; $x < $numSubAddStack; $x++) {
 $relation = array();
 
 for ($x = 0; $x < $numPlace; $x++) {
-    $link = "http://sws.geonames.org/".$geoIDstack[$x]."/about/rdf";
+    $link = "http://sws.geonames.org/".$geoIDstack[$x]."";
     array_push($relation, $link);
 }
 
@@ -433,43 +347,45 @@ if ($geoIDnum >= 1) {
 /*end geonames */
 
 
-$geoserverPublic = $GeoserverEndpointPublic.$GeoServerWS."/";
-$geoserverRestricted = $GeoserverEndpointRestricted.$GeoServerWS."/";
 
-/* references logic */
+/*NEW REFERENCES ENCODING PICK ONE BY UNCOMMENTING*/
 
-/*New references coding for json by km
-User needs to uncomment selection for desired hash*/
+ /* information link only*/
+$references = "{\"http://schema.org/url\":\"".$information."\"}";
 
-//information link only
-//$references = "{\"http://schema.org/url\":\"".$information."\"}";
-
-
-//information, iiif
+ /* information, iiif*/
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
-//information, download
-//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
-
-//information, download, iiif
+ /* information, download, iiif*/
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\"}";
 
-//information, thumb
- 
-$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\"}";
+ /* information, download*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
-//information, esri
+ /* information, esrimaplayer*/
 //$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
 
+ /* information, esrimaplayer, download*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
-/* All options*/
+ /* information, esrifeaturelayer, download*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#FeatureLayer\":\"".$esrirest."\",\"http://schema.org/downloadUrl\":\"".$download."\"}";
 
-//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/thumbnailUrl\":\"".$thumbnail."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://iiif.io/api/image\":\"".$iiif."\",\"urn:x-esri:serviceType:ArcGIS#DynamicMapLayer\":\"".$esrirest."\"}";
+/* information, esriimagelayer, download*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"urn:x-esri:serviceType:ArcGIS#ImageMapLayer\":\"".$esrirest."\"}";
 
+
+/* information, download, FGDC*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://schema.org/downloadUrl\":\"".$download."\",\"http://www.opengis.net/cat/csw/csdgm\":\"".$fgdc."\"}";
+
+/* information, FGDC*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://www.opengis.net/cat/csw/csdgm\":\"".$fgdc."\"}";
+
+/* information, ISO*/
+//$references = "{\"http://schema.org/url\":\"".$information."\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"".$fgdc."\"}";
 
 
 /* polygon parser logic */
-
 /* sample: -125.5339570045,32.7232795799,-113.9665679932,37.6842844962 as W S E N */
 
 $numlocs = count($locDB);
@@ -535,25 +451,24 @@ $layerModDate = $CDT['year']."-".$CDT['mon']."-".$CDT['mday']."T".$CDT['hours'].
 "dc_title_s": <?php echo(json_encode($title)); ?>,
 "dc_description_s": <?php echo(json_encode($description)); ?>,
 "dc_rights_s": <?php echo(json_encode($rights)); ?>,
-"dct_provenance_s": <?php echo(json_encode($provenance)); ?>,
-"dct_references_s": <?php echo(json_encode($references, JSON_UNESCAPED_SLASHES)); ?>,
-"layer_id_s": <?php echo(json_encode($layerID)); ?>,
-"layer_slug_s": <?php echo(json_encode($slug)); ?>,
-"layer_geom_type_s": <?php echo(json_encode($geomType)); ?>,
-"layer_modified_dt": <?php echo(json_encode($layerModDate)); ?>,
 "dc_format_s": <?php echo(json_encode($format)); ?>,
 "dc_language_s": <?php echo(json_encode($language)); ?>,
 "dc_type_s": <?php echo(json_encode($type)); ?>,
 "dc_publisher_sm": <?php echo(json_encode($publisher)); ?>,
 "dc_creator_sm": <?php echo(json_encode($creator)); ?>,
 "dc_subject_sm": <?php echo(json_encode($subject)); ?>,
+"dct_provenance_s": <?php echo(json_encode($provenance)); ?>,
+"dct_references_s": <?php echo(json_encode($references, JSON_UNESCAPED_SLASHES)); ?>,
 "dct_isPartOf_sm": <?php echo(json_encode($isPartOf)); ?>,
 "dct_issued_s": <?php echo(json_encode($dateIssued)); ?>,
 "dct_temporal_sm": <?php echo(json_encode($temporalCoverage)); ?>,
 "dct_spatial_sm": <?php echo(json_encode($spatialCoverage)); ?>,
 "dc_relation_sm": <?php echo(json_encode($relation)); ?>,
-"georss_box_s": <?php echo(json_encode($geoRSSBox)); ?>,
-"georss_polygon_s": <?php echo(json_encode($geoRSSPolygon)); ?>,
+"thumbnail_path_ss": <?php echo(json_encode($thumbnail)); ?>,
+"layer_slug_s": <?php echo(json_encode($UUID)); ?>,
+"layer_geom_type_s": <?php echo(json_encode($geomType)); ?>,
+"layer_modified_dt": <?php echo(json_encode($layerModDate)); ?>,
+"centroid_s": <?php echo(json_encode($geoRSSPoint)); ?>,
 "solr_geom": <?php echo(json_encode($solrGeom)); ?>,
 "solr_year_i": <?php echo(json_encode(intval($solrYear))); ?>
 
